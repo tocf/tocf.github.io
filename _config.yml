@@ -94,4 +94,3 @@ deploy:
   type: git
   repo: https://__GITHUB_TOKEN__@github.com/tocf/tocf.github.io.git
   branch: master
-  
