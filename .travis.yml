@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+- '7.9.0'
+branches:
+  only:
+  - source
+
+install: npm install
+
+before_script:
+- git config --global user.name "junhui"
+- git config --global user.email "junhuihwang@gmail.com"
+- sed -i "s/__GITHUB_TOKEN__/${__GITHUB_TOKEN__}/" _config.yml
+
+script:
+- hexo clean
+- hexo g
+- node node_modules/gulp/bin/gulp.js
+- hexo d

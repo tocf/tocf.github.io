@@ -1,0 +1,71 @@
+
+<div id="article-banner">
+  <h2>Donate</h2>
+  <p class="post-date">Norco-Corona学区家长为反对AB329捐款明细</p>
+  <p id="summary" class="post-date"></p>
+  <p id="unpayList" class="post-date"></p>
+</div>
+<main class="app-body project-app">
+  <div class="pure-g" id="donateList"></div>
+</main>
+<script>
+  (function() {
+    var url = '<%= config.url %>/<%= page.path %>';
+    $('#article-banner').geopattern(url);
+    $('.header').removeClass('fixed-header')
+
+    let totalUnpay = [];
+
+    // $(document).on('click', '#unpay', ()=>{
+    //   $('#unpayList').html(totalUnpay.map(a=>{return a.id+'.'+a.name;}).join('<br/>'));
+    // });
+    $.ajax({
+      headers: {
+        Accept: 'text/html'
+      },
+      type: 'get',
+      url: '/resources/norco-corona-list.csv',
+      success: function (data) {
+        let output = data.split(/\n/gi).filter(a=>a).map(a=>{
+          let temp = a.split(','); 
+          let moneyItem = (temp[2]||'').trim();
+          let unit = '$';
+          if (moneyItem.startsWith('¥')){
+            unit = '¥';
+          }
+          
+          return {
+            id: parseInt(temp[0]||999), 
+            name:(temp[1]||'').trim(), 
+            money: parseInt(moneyItem.replace(/\$|\¥/,'').trim()) || 0,
+            unit: unit,
+            memo: (temp[3]||'').trim()
+          };
+        });
+        window.output = output;
+        let totalDollers = output.filter(a=>a.unit=='$').map(a=>a.money||0).reduce((a,b)=>a+b);
+        let totalRMB = output.filter(a=>a.unit!='$').map(a=>a.money||0).reduce((a,b)=>a+b);
+        totalUnpay = output.filter(a=>a.money==0&&a.memo!='游行');
+
+//        $('#summary').append(`<strong>参与家庭数：${output.length}, 筹集金额共计：(美元 \$${totalDollers}, 人民币 ¥${totalRMB})，<span id="unpay">报名暂未交款者</span>${totalUnpay.length}人</strong>`);
+        $('#summary').append(`<strong>参与家庭数：${output.length}, 筹集金额共计：(美元 \$${totalDollers}, 人民币 ¥${totalRMB}), 费用支出待公示...</strong>`);
+        let outputArray = output.map(a=>{
+          let mm = '';
+          if (a.money != 0){
+            mm = '(' + a.unit + a.money + ')';
+          }
+          return (a.money || a.memo=='游行') ? `<p>${a.id}. ${a.name} ${mm}<small>${a.memo}</small></p>`: `<p>${a.id}. ${a.name} <small>${a.memo}</small></p>`;
+        });
+        let columns = /iphone|andriod|mobile/gi.test(navigator.userAgent)? 2 :3;
+        let idx = Math.ceil(outputArray.length/columns);
+        let outputHtml = '';
+        for (let index = 0; index < columns; index++) {
+          outputHtml += '<div class="pure-u-1-2 pure-u-md-1-3">' + outputArray.slice(index*idx, (index+1)*idx).join('') + '</div>';
+        }
+
+        var cardHtml = outputHtml;
+        $('#donateList').html(cardHtml);
+      }
+    });
+  })()
+</script>

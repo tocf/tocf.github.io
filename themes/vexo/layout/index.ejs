@@ -1,0 +1,59 @@
+<div id="article-banner"></div>
+<div id="article-banner2">
+    <h1 style="font-size:48px;">FOR OUR CHILDREN, FOR THE COMMUNITY</h1>
+</div>
+  
+
+</main>
+<div class="container">
+<h3 style="text-align: center;margin:20px;font-size: 40px;">OUR LATEST NEWS</h3>
+
+<div class="columns" style="margin:15px 0;">
+   
+  <% page.posts.slice(0, 3).each(function(post) { %>
+    <div class="column">
+        <h2 class="article-head">
+        <a href="<%- url_for(post.path) %>"><%- post.title %></a>
+      </h2>
+      %><div class="article-summary"><% 
+        if (post.excerpt) { %>
+          <%- post.excerpt %>
+        <% } else { %>
+          <%- truncate(strip_html(post.content), { length: 150, omission: ' ...' }) %>
+        <% } %></div>
+      </div>
+  <% }) %>
+</div>
+  
+<script>
+    (function () {
+      var url = '<%= config.url %>/<%= page.path %>';
+      var banner = '/resources/homepage.jpg'
+      if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+        var styles = {
+          'background-image': 'url(' + banner + ')',
+          'filter': 'blur(2px)'
+        };
+        var heightTop = 70;
+        var bannerHeight = '400px'
+        if (!!bannerHeight) {
+          styles.height = bannerHeight;
+          heightTop = Math.ceil(parseInt(bannerHeight) / 2);
+        }
+        var bannerIncludeHead = 'false'
+        if (!!bannerIncludeHead) {
+          styles['margin-top'] = '60px';
+          heightTop += 60;
+          $('header').addClass('banner-header');
+        }
+  
+        $('#article-banner2').css({
+          top: heightTop + 'px'
+        });
+        $('#article-banner').css(styles);
+      } else {
+        $('#article-banner').css({'height':'240px'}).geopattern(url);
+      }
+      $('.header').removeClass('fixed-header');
+    })();
+</script>
