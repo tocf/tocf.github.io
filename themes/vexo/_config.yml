@@ -28,7 +28,7 @@ qrcode: true
 # comment
 # you can set gitment, uyan or disqus
 
-comment: disqus
+comment: 
 
 # gitment config
 # gitment_owner: yanm1ng
@@ -45,12 +45,12 @@ google_analytics:
   id: UA-141207496-1
 
 # disqus config
-disqus_shortname: fightingasparents
+disqus_shortname: xxxx
 
 about: 
   banner: http://file.muyutech.com/about.jpg
   avatar: https://24dlmn2bqamt1e72kah59881-wpengine.netdna-ssl.com/wp-content/uploads/2016/02/boxing-gloves-fighting-chargebacks.jpg
-  description: "To protect my kids, i have to fight with the evil.<br><br><br> <small>contact with fightingasparents#gmail(dot)com</small>"
+  description: "To protect my kids, i have to fight with the evil.<br><br><br> <small>contact with xxx#gmail(dot)com</small>"
   weibo_username: 
   twitter_username: 
   github_username: 
